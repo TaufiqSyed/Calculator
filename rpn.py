@@ -1,9 +1,10 @@
 import operator
 import re
 
+
 def infix_to_postfix(infix):
-    prec = {'*': 3, '/': 3, '+': 2, '-': 2, '(': 1}
-    infix_list = re.findall(r'[\d]+|[+|\-|*|/|(|)]', infix)
+    prec = {'**': 4, '*': 3, '/': 3, '+': 2, '-': 2, '(': 1}
+    infix_list = re.findall(r'[\d]+|[+|\-|/)|(]|[*]{1,2}', infix)
     postfix_list = []
     op_stack = []
 
@@ -26,12 +27,14 @@ def infix_to_postfix(infix):
         postfix_list.append(op_stack.pop())
     return ' '.join(postfix_list)
 
+
 def evaluate_rpn(postfix):
     stack = []
     operator_map = {'+': operator.add,
                     '-': operator.sub,
                     '*': operator.mul,
-                    '/': operator.truediv}
+                    '/': operator.truediv,
+                    '**': operator.pow}
     for token in postfix.split():
         if token.isnumeric():
             stack.append(int(token))
@@ -40,7 +43,8 @@ def evaluate_rpn(postfix):
             a = stack.pop()
             operation = operator_map[token]
             stack.append(operation(a, b))
-    return stack[0]
+    return stack.pop()
+
 
 def evaluate_infix(infix):
     return evaluate_rpn(infix_to_postfix(infix))
