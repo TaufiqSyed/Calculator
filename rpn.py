@@ -8,7 +8,7 @@ def infix_to_postfix(infix):
     op_stack = []
 
     for token in infix_list:
-        if token.isalnum():
+        if token.isnumeric():
             postfix_list.append(token)
         elif token == '(':
             op_stack.append(token)
